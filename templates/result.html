@@ -1,0 +1,32 @@
+{% extends "layout.html" %} {% block content %}
+<h1>✅ Payment Result ({{ mode }})</h1>
+
+<h3>What happened</h3>
+<ul>
+    <li><b>Client sent client_total:</b> {{ client_total }} P-coins</li>
+    <li><b>Server computed server_total:</b> {{ server_total }} P-coins</li>
+    <li><b>Actually charged:</b> {{ charged }} P-coins</li>
+</ul>
+
+<h3>Cart (before purchase)</h3>
+{% if cart_before|length == 0 %}
+<p class="muted">Cart was empty.</p>
+{% else %}
+<ul>
+    {% for item_id, qty in cart_before %}
+    <li>{{ item_id }} × {{ qty }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+<h3>Notes</h3>
+<ul>
+    {% for n in notes %}
+    <li>{{ n }}</li>
+    {% endfor %}
+</ul>
+
+<p><b>Balance now:</b> {{ balance }} P-coins</p>
+
+<a class="btn" href="{{ url_for('shop') }}">Back to shop</a>
+{% endblock %}

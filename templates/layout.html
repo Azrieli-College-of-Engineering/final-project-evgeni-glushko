@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>P-coins Ice Cream Shop (Parameter Tampering PoC)</title>
+        <style>
+            body {
+                font-family: system-ui, Arial;
+                margin: 24px;
+            }
+            .row {
+                display: flex;
+                gap: 16px;
+                flex-wrap: wrap;
+            }
+            .card {
+                border: 1px solid #ddd;
+                border-radius: 12px;
+                padding: 14px;
+                width: 260px;
+            }
+            .topbar {
+                display: flex;
+                gap: 12px;
+                align-items: center;
+                margin-bottom: 16px;
+            }
+            .pill {
+                padding: 6px 10px;
+                border-radius: 999px;
+                background: #f3f3f3;
+            }
+            .btn {
+                padding: 8px 12px;
+                border-radius: 10px;
+                border: 1px solid #bbb;
+                background: #fff;
+                cursor: pointer;
+            }
+            .btn-primary {
+                border-color: #333;
+            }
+            .error {
+                background: #ffe7e7;
+                padding: 10px;
+                border-radius: 10px;
+                border: 1px solid #ffb3b3;
+            }
+            .ok {
+                background: #e9ffe7;
+                padding: 10px;
+                border-radius: 10px;
+                border: 1px solid #b6ffb3;
+            }
+            .muted {
+                color: #666;
+            }
+            code {
+                background: #f6f6f6;
+                padding: 2px 6px;
+                border-radius: 6px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="topbar">
+            <div class="pill"><b>P-coins Balance:</b> {{ balance }}</div>
+            <a class="btn" href="{{ url_for('shop') }}">Shop</a>
+            <a class="btn" href="{{ url_for('checkout') }}">Checkout</a>
+            <a class="btn" href="{{ url_for('wallet') }}">Wallet</a>
+        </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %} {% if
+        messages %} {% for category, msg in messages %}
+        <div class="{{ 'error' if category == 'error' else 'ok' }}">
+            {{ msg }}
+        </div>
+        {% endfor %}
+        <div style="height: 10px"></div>
+        {% endif %} {% endwith %} {% block content %}{% endblock %}
+    </body>
+</html>

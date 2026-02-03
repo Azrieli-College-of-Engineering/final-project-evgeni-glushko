@@ -1,0 +1,58 @@
+{% extends "layout.html" %} {% block content %}
+<h1>💳 Checkout</h1>
+
+{% if cart|length == 0 %}
+<p class="muted">Your cart is empty. Go to the shop and add ice cream.</p>
+{% else %}
+<h3>Order</h3>
+<ul>
+    {% for item_id, qty in cart %}
+    <li>
+        {{ items[item_id].name }} × {{ qty }} = {{ items[item_id].price * qty }}
+        P-coins
+    </li>
+    {% endfor %}
+</ul>
+
+<p><b>Server computed total:</b> {{ server_total }} P-coins</p>
+
+<p class="muted">
+    The form below includes a hidden field <code>client_total</code>. In the
+    vulnerable flow, the server will trust it. In the fixed flow, the server
+    will ignore it.
+</p>
+
+<div class="row">
+    <div class="card">
+        <h3>Vulnerable payment</h3>
+        <form method="post" action="{{ url_for('pay_vuln') }}">
+            <input
+                type="hidden"
+                name="client_total"
+                value="{{ server_total }}"
+            />
+            <button class="btn btn-primary" type="submit">
+                Pay (vulnerable)
+            </button>
+        </form>
+        <p class="muted">Tamper target: <code>client_total</code></p>
+    </div>
+
+    <div class="card">
+        <h3>Fixed payment</h3>
+        <form method="post" action="{{ url_for('pay_fixed') }}">
+            <input
+                type="hidden"
+                name="client_total"
+                value="{{ server_total }}"
+            />
+            <input type="hidden" name="cart_token" value="{{ cart_token }}" />
+            <button class="btn btn-primary" type="submit">Pay (fixed)</button>
+        </form>
+        <p class="muted">
+            Ignores client_total and recomputes total server-side. Also verifies
+            a signed <code>cart_token</code>.
+        </p>
+    </div>
+</div>
+{% endif %} {% endblock %}
