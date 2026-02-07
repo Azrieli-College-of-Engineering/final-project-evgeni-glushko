@@ -78,7 +78,7 @@ def shop():
 
     return render_template(
         "shop.html",
-        items=ITEMS.values(),
+        items=ITEMS,
         cart=cart,
         total=total,
         balance=session["balance"],
