@@ -6,16 +6,16 @@
 </p>
 
 <div class="row">
-    {% for it in items %}
+    {% for item_id, item in items.items() %}
     <div class="card">
-        <h3>{{ it.name }}</h3>
-        <div><b>Price:</b> {{ it.price }} P-coins</div>
+        <h3>{{ item.name }}</h3>
+        <div><b>Price:</b> {{ item.price }} P-coins</div>
         <form
             method="post"
             action="{{ url_for('cart_add') }}"
             style="margin-top: 10px"
         >
-            <input type="hidden" name="item_id" value="{{ it.id }}" />
+            <input type="hidden" name="item_id" value="{{ item.id }}" />
             <label
                 >Qty:
                 <input name="qty" type="number" min="1" max="20" value="1" />
@@ -39,7 +39,7 @@
 <ul>
     {% for item_id, qty in cart %}
     <li>
-        {{ items[item_id].name }} × {{ qty }} = {{ items[item_id].price * qty }}
+        {{ items[item_id].name }} x {{ qty }} = {{ items[item_id].price * qty }}
         P-coins
     </li>
     {% endfor %}
